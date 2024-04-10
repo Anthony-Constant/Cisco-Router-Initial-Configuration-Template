@@ -1,0 +1,92 @@
+! Cisco Router Configuration Template
+!
+! Note: Replace placeholders like <Placeholder> with appropriate values.
+!
+! Enter privileged exec mode
+enable
+!
+! Enter global configuration mode
+configure terminal
+!
+! Set software version
+version <SoftwareVersion>
+!
+! Disable unnecessary services
+no service pad
+no service config
+no service finger
+no service dhcp
+no ip bootp server
+no ip source-route
+no cdp run
+no ip gratuitous-arps
+no ip domain-lookup
+!
+! Set hostname
+hostname <Hostname>
+!
+! Set system MTU
+system mtu <SystemMTU>
+!
+! Configure Spanning Tree Protocol
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+! Set VLAN internal allocation policy
+vlan database
+vlan internal allocation policy ascending
+!
+! Configure interfaces
+interface FastEthernet0/0
+ description *** WAN Interface ***
+ no shutdown
+ ip address <WAN_IP> <WAN_SubnetMask>
+!
+interface FastEthernet0/1
+ description *** LAN Interface ***
+ no shutdown
+ ip address <LAN_IP> <LAN_SubnetMask>
+!
+! Repeat for additional interfaces as needed
+!
+! Set default route (if required)
+ip route 0.0.0.0 0.0.0.0 <Gateway_IP>
+!
+! Configure VLAN interface Management IP
+interface Vlan1
+ ip address <ManagementIP> <SubnetMask>
+ no shutdown
+!
+! Configure HTTP server
+ip http server
+ip http secure-server
+!
+! Enable SSH
+ip ssh version 2
+!
+! Set enable secret for console
+enable secret <EnablePassword>
+!
+! Configure console and VTY lines
+line con 0
+ password <ConsolePassword>
+ logging synchronous
+ login
+line vty 0 4
+ password <VTYPassword>
+ login
+ transport input ssh
+!
+! Configure login banner
+banner motd #
+*******************************************************************************
+** * WARNING * **
+** * * **
+** * Unauthorized access to this device is prohibited. * **
+** * Violators will be prosecuted to the fullest extent of the law. * **
+** * * **
+*******************************************************************************
+#
+! Exit configuration mode
+end
+!
